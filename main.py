@@ -19,7 +19,23 @@ ENTRY = (
 )
 
 
+MAX_CHARS = 140
+MIN_CHARS = 1
+
+
+def validate_entry(text: str) -> None:
+    """Enforce the gate: 1-140 characters, one non-blank line."""
+    if not MIN_CHARS <= len(text) <= MAX_CHARS:
+        raise ValueError(
+            f"entry is {len(text)} characters, outside the "
+            f"{MIN_CHARS}-{MAX_CHARS} limit"
+        )
+    if not text.strip() or "\n" in text or "\r" in text:
+        raise ValueError("entry must be one non-blank line")
+
+
 def main() -> None:
+    validate_entry(ENTRY)
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
         f.write(ENTRY)
